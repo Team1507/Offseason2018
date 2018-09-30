@@ -26,6 +26,7 @@ class Drivetrain : public frc::Subsystem {
 
   //Our Functions
 
+  void   DriveWithJoystick( void );
   void   Drive( double left, double right );
   void   Stop( void );
   double GetRightMotor(void);

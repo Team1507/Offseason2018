@@ -6,9 +6,37 @@
 /*----------------------------------------------------------------------------*/
 
 #include "OI.h"
-
+#include "Robot.h"
 #include <WPILib.h>
+
 
 OI::OI() {
   // Process operator interface input here.
+
+  std::cout<<"In OI"<<std::endl;
+
+  //Init Gamepads
+  driver_gamepad   = new frc::Joystick(0);
+//operator_gamepad = new frc::Joystick(1);
+
+  //Define Driver Button Commands
+    //A_Button = new frc::JoystickButton( gamepad, 1);
+    //A_Button->WhenPressed(new CmdPrintText("A Button"));
+
+  //Define Operator Button Commands
+
+
+  //Smartdashboard Commands Buttons
+
+
+
 }
+
+
+//Public Gamepad Access
+frc::Joystick* OI::DriverGamepad() {
+   return driver_gamepad;
+}
+// frc::Joystick* OI::OperatorGamepad() {
+//    return operrator_gamepad;
+// }

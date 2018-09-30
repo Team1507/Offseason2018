@@ -11,7 +11,7 @@
 #include <SmartDashboard/SmartDashboard.h>
 
 //ExampleSubsystem Robot::m_subsystem;
-OI Robot::m_oi;
+OI *Robot::m_oi;
 Drivetrain *Robot::m_drivetrain;
 
 
@@ -29,7 +29,7 @@ void Robot::RobotInit()
   m_drivetrain = new Drivetrain();
 
   //OI **MUST** be after all subsystem Inits
-
+  m_oi = new OI();
 
 	//******** INIT *************************************
   std::cout<<"RobotInit"<<std::endl;
@@ -56,7 +56,7 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() 
 {
-
+  Write2Dashboard();
 }
 
 /**
@@ -122,6 +122,9 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() 
 { 
   frc::Scheduler::GetInstance()->Run();
+
+  Robot::m_drivetrain->DriveWithJoystick();
+
 }
 
 void Robot::TestPeriodic() 
@@ -152,5 +155,13 @@ void Write2Dashboard(void)
   // SmartDashboard::PutNumber("UD",  Robot::m_gimble->GetUDservo()  );
 
   // SmartDashboard::PutNumber("Motor",  Robot::m_motor->GetMotor()  );
+
+  SmartDashboard::PutNumber("L_Motor",  Robot::m_drivetrain->GetLeftMotor()  );
+  SmartDashboard::PutNumber("R_Motor",  Robot::m_drivetrain->GetRightMotor()  );
+
+  SmartDashboard::PutNumber("D_L_Y_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(1)  );
+  SmartDashboard::PutNumber("D_R_Y_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(5)  );
+  SmartDashboard::PutNumber("D_L_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(0)  );
+  SmartDashboard::PutNumber("D_R_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(4)  );
 
 }

@@ -8,6 +8,8 @@
 #include "Robot.h"
 #include "Subsystems\Drivetrain.h"
 
+#include "Commands\CmdDriveWithGamepad.h"
+
 Drivetrain::Drivetrain() : Subsystem("Drivetrain") 
 {
   std::cout << "In Drivetrain" << std::endl;
@@ -21,12 +23,29 @@ Drivetrain::Drivetrain() : Subsystem("Drivetrain")
 void Drivetrain::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
+  SetDefaultCommand(new CmdDriveWithGamepad() );
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
 
+#define GP_NULL_ZONE  	0.12
+
+//**************************************************************
+void Drivetrain::DriveWithJoystick( void )
+{
+  double right = Robot::m_oi->DriverGamepad()->GetRawAxis(5);
+  double left  = Robot::m_oi->DriverGamepad()->GetRawAxis(1);
+
+
+	//Check if readings are in null zone..
+	if( fabs(right)  < GP_NULL_ZONE )	right = 0.0;
+	if( fabs(left )  < GP_NULL_ZONE )	left  = 0.0;
+
+  differentialDrive->TankDrive( left,  right,  true);
+
+}
 
 //**************************************************************
 void Drivetrain::Drive( double left, double right )

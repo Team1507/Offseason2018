@@ -24,7 +24,7 @@
 class Robot : public frc::TimedRobot {
  public:
   //static ExampleSubsystem m_subsystem;
-  static OI m_oi;
+  static OI *m_oi;
 
   //Subsystems
   static Drivetrain *m_drivetrain;

@@ -6,20 +6,15 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include "WPILib.h"
 
-class OI {
+#include <Commands/Command.h>
 
-
-private:
-  frc::Joystick *driver_gamepad;
-//frc::Joystick *operator_gamepad;
-
-
-public:
-  OI();
-
-
-  frc::Joystick *DriverGamepad();
-//frc::Joystick *OperatorGamepad();
+class CmdDriveWithGamepad : public frc::Command {
+ public:
+  CmdDriveWithGamepad();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
