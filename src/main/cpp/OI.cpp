@@ -9,6 +9,7 @@
 #include "Robot.h"
 #include <WPILib.h>
 
+#include "Commands\CmdTrannyGearCtrl.h"
 
 OI::OI() {
   // Process operator interface input here.
@@ -27,7 +28,8 @@ OI::OI() {
 
 
   //Smartdashboard Commands Buttons
-
+  frc::SmartDashboard::PutData("CmdGearControl: LO_GEAR", new CmdTrannyGearCtrl(Drivetrain::LO_GEAR));
+  frc::SmartDashboard::PutData("CmdGearControl: HI_GEAR", new CmdTrannyGearCtrl(Drivetrain::HI_GEAR));
 
 
 }

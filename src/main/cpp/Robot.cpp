@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
+#include "GamepadMap.h"
 
 #include <Commands/Scheduler.h>
 #include <SmartDashboard/SmartDashboard.h>
@@ -43,6 +44,9 @@ void Robot::RobotInit()
 
 
   //Init Subsystems
+  m_drivetrain->ResetEncoders();
+  m_drivetrain->ZeroGyro();
+  m_drivetrain->SetGear( Drivetrain::LO_GEAR );
 
 }
 
@@ -140,28 +144,19 @@ START_ROBOT_CLASS(Robot)
 void Write2Dashboard(void)
 {
 
-  // //Either Robot::m_oi.getGamePad  *or*  Robot::oi->getGamepad()
-  // SmartDashboard::PutNumber("L X",  Robot::m_oi->getGamepad()->GetRawAxis(0)   );
-  // SmartDashboard::PutNumber("L Y",  Robot::m_oi->getGamepad()->GetRawAxis(1)   );
-  // SmartDashboard::PutNumber("R X",  Robot::m_oi->getGamepad()->GetRawAxis(4)   );
-  // SmartDashboard::PutNumber("R Y",  Robot::m_oi->getGamepad()->GetRawAxis(5)   );
-
-  // SmartDashboard::PutBoolean("A Button",  Robot::m_oi->getGamepad()->GetRawButton(1)  );
-  // SmartDashboard::PutBoolean("B Button",  Robot::m_oi->getGamepad()->GetRawButton(2)  );
-  // SmartDashboard::PutBoolean("X Button",  Robot::m_oi->getGamepad()->GetRawButton(3)  );
-  // SmartDashboard::PutBoolean("Y Button",  Robot::m_oi->getGamepad()->GetRawButton(4)  );
-
-  // SmartDashboard::PutNumber("LR",  Robot::m_gimble->GetLRservo()  );
-  // SmartDashboard::PutNumber("UD",  Robot::m_gimble->GetUDservo()  );
-
-  // SmartDashboard::PutNumber("Motor",  Robot::m_motor->GetMotor()  );
-
   SmartDashboard::PutNumber("L_Motor",  Robot::m_drivetrain->GetLeftMotor()  );
   SmartDashboard::PutNumber("R_Motor",  Robot::m_drivetrain->GetRightMotor()  );
 
-  SmartDashboard::PutNumber("D_L_Y_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(1)  );
-  SmartDashboard::PutNumber("D_R_Y_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(5)  );
-  SmartDashboard::PutNumber("D_L_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(0)  );
-  SmartDashboard::PutNumber("D_R_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(4)  );
+  SmartDashboard::PutNumber("D_L_Y_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_Y)  );
+  SmartDashboard::PutNumber("D_R_Y_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_Y)  );
+  SmartDashboard::PutNumber("D_L_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_X)  );
+  SmartDashboard::PutNumber("D_R_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_X)  );
+
+	SmartDashboard::PutNumber("LeftEnc",    Robot::m_drivetrain->GetLeftEncoder());
+	SmartDashboard::PutNumber("RightEnc",   Robot::m_drivetrain->GetRightEncoder());  
+
+	SmartDashboard::PutBoolean("navx_IsConn", Robot::m_drivetrain->IsGyroConnected() );
+	SmartDashboard::PutNumber("navx_Yaw",     Robot::m_drivetrain->GetGyroYaw() );
+  SmartDashboard::PutNumber("navx_Rate",    Robot::m_drivetrain->GetGyroRate() );
 
 }

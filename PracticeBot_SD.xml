@@ -1,0 +1,82 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="navx_IsConn" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="76" y="198"/>
+	</widget>
+	<widget field="D_R_Y_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="609" y="17"/>
+	</widget>
+	<widget field="D_R_X_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="609" y="41"/>
+	</widget>
+	<widget field="D_L_Y_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="612" y="73"/>
+	</widget>
+	<widget field="D_L_X_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="612" y="99"/>
+	</widget>
+	<widget field="navx_Yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="48" y="171"/>
+	</widget>
+	<widget field="navx_Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="44" y="146"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="612" y="130"/>
+	</static-widget>
+	<widget field="RightEnc" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="399" y="30"/>
+	</widget>
+	<widget field="LeftEnc" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="405" y="53"/>
+	</widget>
+	<widget field="CmdGearControl: LO_GEAR" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="253" y="205"/>
+	</widget>
+	<widget field="CmdGearControl: HI_GEAR" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="256" y="235"/>
+	</widget>
+	<widget field="R_Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="258" y="28"/>
+	</widget>
+	<widget field="L_Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="260" y="51"/>
+		<height>20</height>
+	</widget>
+</dashboard>
+<live-window>
+	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="Spark[1]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+			<location x="6" y="16"/>
+			<height>46</height>
+			<width>293</width>
+		</widget>
+		<widget field="Spark[0]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+			<location x="6" y="62"/>
+			<height>46</height>
+			<width>293</width>
+		</widget>
+		<widget field="DoubleSolenoid[1,0]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
+			<location x="6" y="108"/>
+			<height>20</height>
+			<width>293</width>
+		</widget>
+		<widget field="Encoder[2]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
+			<location x="6" y="128"/>
+			<height>98</height>
+			<width>293</width>
+		</widget>
+		<widget field="Encoder[0]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
+			<location x="6" y="226"/>
+			<height>98</height>
+			<width>293</width>
+		</widget>
+		<location x="0" y="24"/>
+		<width>305</width>
+		<height>331</height>
+	</widget>
+	<widget field="Drivetrain" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="0"/>
+	</widget>
+</live-window>
+</xml>
