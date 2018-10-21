@@ -6,22 +6,24 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include "WPILib.h"
 
-class OI {
+#include <Commands/Command.h>
 
-
-private:
-  frc::Joystick *driver_gamepad;
-//frc::Joystick *operator_gamepad;
-
-  frc::JoystickButton *m_driver_lbump;
-  frc::JoystickButton *m_driver_rbump;
-
-public:
-  OI();
+class CmdDriveFwdEncoder : public frc::Command {
+ public:
+    CmdDriveFwdEncoder(double power, double distance, bool stop, double timeout);
+    
+    void Initialize() override;
+    void Execute() override;
+    bool IsFinished() override;
+    void End() override;
+    void Interrupted() override;
 
 
-  frc::Joystick *DriverGamepad();
-//frc::Joystick *OperatorGamepad();
+  private:
+    double m_power;
+    double m_distance;
+    bool   m_stop;
+    double m_timeout;   
+
 };

@@ -23,9 +23,12 @@ class Drivetrain : public frc::Subsystem {
   frc::Encoder            *rightEncoder;
   frc::Encoder            *leftEncoder;
 
-  //frc::DoubleSolenoid     *gearShift;
+  frc::DoubleSolenoid     *gearShift;
 
 	AHRS *ahrs;	    //NavX
+
+  double acc_curr_l;
+  double acc_curr_r;
 
  public:
   Drivetrain();
@@ -35,12 +38,14 @@ class Drivetrain : public frc::Subsystem {
   //Constants
   const static int LO_GEAR;
   const static int HI_GEAR;  
+  const static int ENC_TICKS_PER_INCH;
 
   //*****Our Functions******
 
   //Drive
   void   DriveWithJoystick( void );
   void   Drive( double left, double right );
+  void   DriveAcc( double left, double right );
   void   Stop( void );
   double GetRightMotor(void);
   double GetLeftMotor(void);

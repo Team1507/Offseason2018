@@ -6,22 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include "WPILib.h"
 
-class OI {
+#include <Commands/CommandGroup.h>
 
-
-private:
-  frc::Joystick *driver_gamepad;
-//frc::Joystick *operator_gamepad;
-
-  frc::JoystickButton *m_driver_lbump;
-  frc::JoystickButton *m_driver_rbump;
-
-public:
-  OI();
-
-
-  frc::Joystick *DriverGamepad();
-//frc::Joystick *OperatorGamepad();
+class GrpTest : public frc::CommandGroup {
+ public:
+  GrpTest();
 };

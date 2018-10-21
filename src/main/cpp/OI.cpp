@@ -9,7 +9,11 @@
 #include "Robot.h"
 #include <WPILib.h>
 
-#include "Commands\CmdTrannyGearCtrl.h"
+#include "GamepadMap.h"
+#include "Commands/CmdTrannyGearCtrl.h"
+#include "Commands/CmdDriveClearAll.h"
+
+#include "Commands/GrpTest.h"
 
 OI::OI() {
   // Process operator interface input here.
@@ -21,6 +25,12 @@ OI::OI() {
 //operator_gamepad = new frc::Joystick(1);
 
   //Define Driver Button Commands
+  m_driver_lbump = new frc::JoystickButton( driver_gamepad, GAMEPADMAP_BUTTON_LBUMP);
+  m_driver_lbump->WhenPressed( new CmdTrannyGearCtrl( Drivetrain::LO_GEAR) );
+
+  m_driver_rbump = new frc::JoystickButton( driver_gamepad, GAMEPADMAP_BUTTON_RBUMP);
+  m_driver_rbump->WhenPressed( new CmdTrannyGearCtrl( Drivetrain::HI_GEAR) );
+
     //A_Button = new frc::JoystickButton( gamepad, 1);
     //A_Button->WhenPressed(new CmdPrintText("A Button"));
 
@@ -31,6 +41,9 @@ OI::OI() {
   frc::SmartDashboard::PutData("CmdGearControl: LO_GEAR", new CmdTrannyGearCtrl(Drivetrain::LO_GEAR));
   frc::SmartDashboard::PutData("CmdGearControl: HI_GEAR", new CmdTrannyGearCtrl(Drivetrain::HI_GEAR));
 
+  frc::SmartDashboard::PutData("GrpTest Command", new GrpTest() );
+  
+  frc::SmartDashboard::PutData("Drive Clear All", new CmdDriveClearAll() );
 
 }
 

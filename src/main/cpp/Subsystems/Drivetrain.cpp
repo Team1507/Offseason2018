@@ -15,22 +15,32 @@
 //Drivetrain Constants
 const int Drivetrain::LO_GEAR = 0;
 const int Drivetrain::HI_GEAR = 1;
+const int Drivetrain::ENC_TICKS_PER_INCH = 42;
 
 
 Drivetrain::Drivetrain() : Subsystem("Drivetrain") 
 {
-  std::cout << "In Drivetrain" << std::endl;
+	std::cout << "In Drivetrain" << std::endl;
 
-  leftMotor         = new frc::Spark(0);
-  rightMotor        = new frc::Spark(1);
-  differentialDrive = new frc::DifferentialDrive(*leftMotor, *rightMotor);
+	leftMotor         = new frc::Spark(0);
+	rightMotor        = new frc::Spark(1);
+	differentialDrive = new frc::DifferentialDrive(*leftMotor, *rightMotor);
 
-  rightEncoder      = new frc::Encoder(0, 1, false, frc::Encoder::k4X);
-  leftEncoder       = new frc::Encoder(2, 3, false, frc::Encoder::k4X);
+	rightEncoder      = new frc::Encoder(0, 1, false, frc::Encoder::k4X);
+	leftEncoder       = new frc::Encoder(2, 3, false, frc::Encoder::k4X);
 
-//  gearShift         = new frc::DoubleSolenoid(1, 0, 1);
+	gearShift         = new frc::DoubleSolenoid(1, 0, 1);
 
-  ahrs                = new AHRS(SPI::Port::kMXP);
+	ahrs            	= new AHRS(SPI::Port::kMXP);
+
+	//acceleration test
+	acc_curr_l = 0;
+	acc_curr_r = 0;
+
+
+	//Disable Motor Saftey
+	//Not a good idea, but required for GrpTest -> WaitCommand() 
+	differentialDrive->SetSafetyEnabled(false);
 
 }
 
@@ -45,19 +55,36 @@ void Drivetrain::InitDefaultCommand() {
 
 
 #define GP_NULL_ZONE  	0.12
+#define DRIVE_MULT			0.5		//Half power for concrete
 
 //**************************************************************
 void Drivetrain::DriveWithJoystick( void )
 {
-  double right = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_Y);
-  double left  = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_Y);
+    double right = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_Y);
+    double left  = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_Y);
 
+	double rTrig = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_TRIG);
+	double lTrig = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_TRIG);
 
 	//Check if readings are in null zone..
 	if( fabs(right)  < GP_NULL_ZONE )	right = 0.0;
 	if( fabs(left )  < GP_NULL_ZONE )	left  = 0.0;
 
-  differentialDrive->TankDrive( left,  right,  true);
+
+	//Check for Drive Straight
+	if( lTrig > 0.5)
+	{
+		//Drive Straight
+  	    //differentialDrive->TankDrive( left ,  right ,  true);													//True for sraight power
+		differentialDrive->TankDrive( right * DRIVE_MULT,  right * DRIVE_MULT,  false);	//False for reduced power
+	}
+	else
+	{
+		//Normal Driving
+	    //differentialDrive->TankDrive( left ,  right ,  true);													//True for sraight power
+		differentialDrive->TankDrive( left * DRIVE_MULT,  right * DRIVE_MULT,  false);	//False for reduced power
+	}
+
 
 }
 
@@ -65,16 +92,83 @@ void Drivetrain::DriveWithJoystick( void )
 void Drivetrain::Drive( double left, double right )
 {
 	//Neg=Fwd.   Pos=Rev
-	differentialDrive->TankDrive( (-1.0)*left,  (-1.0)*right,  false);
+	differentialDrive->TankDrive( (-1.0)*DRIVE_MULT*left,  (-1.0)*DRIVE_MULT*right,  false);
 
 }
 
+//**************************************************************
+void Drivetrain::DriveAcc( double left, double right )
+{
+	const double ACC_ADDER = 0.05;			//roughly 1/25  ~~ about half second acc
+	//const double ACC_ADDER = 0.01;		//roughly 1/100  ~~ about 2 second acc
+
+	bool l_neg = (left < 0);
+	bool r_neg = (right < 0);
+
+	double abs_l = fabs(left);
+	double abs_r = fabs(right);
+
+	double f_l = 0;
+	double f_r = 0;
+
+
+	//*** LEFT ***
+	if( abs_l < acc_curr_l )	
+	{
+		//Power Decreased - immediate match lower power
+		f_l = abs_l;
+		acc_curr_l = abs_l;
+	}
+	else if( abs_l > acc_curr_l )
+	{
+		//current is less than requested.  Add power
+		acc_curr_l += ACC_ADDER;
+		f_l = acc_curr_l;
+	}
+	else
+	{
+		//power is equal to current
+		f_l = abs_l;
+	}
+
+	//*** RIGHT ***
+	if( abs_r < acc_curr_r )	
+	{
+		//Power Decreased - immediate match lower power
+		f_r = abs_r;
+		acc_curr_r = abs_r;
+	}
+	else if( abs_r > acc_curr_r )
+	{
+		//current is less than requested.  Add power
+		acc_curr_r += ACC_ADDER;
+		f_r = acc_curr_r;
+	}
+	else
+	{
+		//power is equal to current
+		f_r = abs_r;
+	}
+
+
+	//Adjust for direction
+	if(  l_neg ) f_l *= (-1.0);
+	if(  r_neg ) f_r *= (-1.0);
+
+
+	//Neg=Fwd.   Pos=Rev
+	differentialDrive->TankDrive( (-1.0)*DRIVE_MULT*f_l,  (-1.0)*DRIVE_MULT*f_r,  false);
+
+}
 
 //**************************************************************
 void Drivetrain::Stop( void )
 {
 	differentialDrive->TankDrive(0.0, 0.0, false);
-  std::cout << "STOP!" << std::endl;
+  	std::cout << "STOP!" << std::endl;
+
+	acc_curr_l = 0;
+  	acc_curr_r = 0;
 }
 
 //**************************************************************
@@ -93,11 +187,13 @@ double Drivetrain::GetLeftMotor(void)
 
 void Drivetrain::SetLowGear( void )
 {
-//	gearShift->Set(DoubleSolenoid::kForward);
+	gearShift->Set(DoubleSolenoid::kForward);
+	std::cout << "LowGear" << std::endl;
 }
 void Drivetrain::SetHighGear( void )
 {
-//	gearShift->Set(DoubleSolenoid::kReverse);
+	gearShift->Set(DoubleSolenoid::kReverse);
+	std::cout << "HighGear" << std::endl;
 }
 
 void Drivetrain::SetGear( int gear )
@@ -108,12 +204,12 @@ void Drivetrain::SetGear( int gear )
 
 bool Drivetrain::IsLowGear(void)
 {
-	// DoubleSolenoid::Value CurrGear = (gearShift->Get());
+	DoubleSolenoid::Value CurrGear = (gearShift->Get());
 
-	// if( CurrGear == DoubleSolenoid::kForward)
-	// 	return true;
-	// else
-	// 	return false;
+	if( CurrGear == DoubleSolenoid::kForward)
+		return true;
+	else
+		return false;
   return false;
 }
 
@@ -121,7 +217,9 @@ bool Drivetrain::IsLowGear(void)
 //**************** ENCODERS *********************
 int Drivetrain::GetLeftEncoder(void)
 {
-	return leftEncoder->GetRaw();
+	//return leftEncoder->GetRaw();
+	//We only have 1 encoder and it's mounted on the right.  Use the right encoder
+	return rightEncoder->GetRaw();
 }
 int Drivetrain::GetRightEncoder(void)
 {
@@ -154,5 +252,7 @@ void Drivetrain::ZeroGyro(void)
 {
   std::cout<<"ZeroGyro"<<std::endl;
 	ahrs->ZeroYaw();
+	//**OR
+	//ahrs->Reset();//????
 }
 

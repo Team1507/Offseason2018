@@ -14,6 +14,8 @@
 //ExampleSubsystem Robot::m_subsystem;
 OI *Robot::m_oi;
 Drivetrain *Robot::m_drivetrain;
+frc::Timer *Robot::m_timer;
+
 
 
 //local function prototypes
@@ -32,6 +34,8 @@ void Robot::RobotInit()
   //OI **MUST** be after all subsystem Inits
   m_oi = new OI();
 
+  m_timer = new frc::Timer();
+
 	//******** INIT *************************************
   std::cout<<"RobotInit"<<std::endl;
 	std::cout<<"PracticeBot2018"<<std::endl;
@@ -45,10 +49,11 @@ void Robot::RobotInit()
 
   //Init Subsystems
   m_drivetrain->ResetEncoders();
-  m_drivetrain->ZeroGyro();
   m_drivetrain->SetGear( Drivetrain::LO_GEAR );
-  //I am making this change right now!
-  
+
+
+  //I don't think this works.  It may be too early and not talking to NavX yet
+  //m_drivetrain->ZeroGyro();   
 
 }
 
@@ -75,6 +80,7 @@ void Robot::DisabledInit()
   std::cout<<"DisabledInit"<<std::endl;
 
   m_drivetrain->Stop();
+  m_timer->Stop();
 
 }
 
@@ -119,6 +125,9 @@ void Robot::TeleopInit() {
 
   std::cout<<"TeleopInit"<<std::endl;
 
+  m_timer->Reset();
+  m_timer->Start();
+
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
@@ -128,9 +137,6 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() 
 { 
   frc::Scheduler::GetInstance()->Run();
-
-  Robot::m_drivetrain->DriveWithJoystick();
-
 }
 
 void Robot::TestPeriodic() 
@@ -154,11 +160,21 @@ void Write2Dashboard(void)
   SmartDashboard::PutNumber("D_L_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_X)  );
   SmartDashboard::PutNumber("D_R_X_axis",  Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_X)  );
 
+  SmartDashboard::PutNumber("D_L_Trig",    Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_TRIG)  );
+  SmartDashboard::PutNumber("D_R_Trig",    Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_TRIG)  );
+
+
 	SmartDashboard::PutNumber("LeftEnc",    Robot::m_drivetrain->GetLeftEncoder());
 	SmartDashboard::PutNumber("RightEnc",   Robot::m_drivetrain->GetRightEncoder());  
 
 	SmartDashboard::PutBoolean("navx_IsConn", Robot::m_drivetrain->IsGyroConnected() );
 	SmartDashboard::PutNumber("navx_Yaw",     Robot::m_drivetrain->GetGyroYaw() );
   SmartDashboard::PutNumber("navx_Rate",    Robot::m_drivetrain->GetGyroRate() );
+
+
+  //Time
+  //SmartDashboard::PutNumber("FPGATime1",  GetFPGATime() );                      //us
+  SmartDashboard::PutNumber("FPGATime2",  Robot::m_timer->GetFPGATimestamp() );   //sec
+  SmartDashboard::PutNumber("Timer",      Robot::m_timer->Get() );                //sec
 
 }

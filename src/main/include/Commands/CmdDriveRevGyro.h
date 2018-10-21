@@ -6,22 +6,25 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include "WPILib.h"
 
-class OI {
+#include <Commands/Command.h>
 
-
-private:
-  frc::Joystick *driver_gamepad;
-//frc::Joystick *operator_gamepad;
-
-  frc::JoystickButton *m_driver_lbump;
-  frc::JoystickButton *m_driver_rbump;
-
-public:
-  OI();
+class CmdDriveRevGyro : public frc::Command {
+ public:
+    CmdDriveRevGyro(double power, double heading, double distance, bool stop, double timeout);
+    
+    void Initialize() override;
+    void Execute() override;
+    bool IsFinished() override;
+    void End() override;
+    void Interrupted() override;
 
 
-  frc::Joystick *DriverGamepad();
-//frc::Joystick *OperatorGamepad();
+  private:
+    double m_power;
+    double m_heading;
+    double m_distance;
+    bool   m_stop;
+    double m_timeout;   
+
 };

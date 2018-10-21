@@ -5,23 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-#include "WPILib.h"
+#include "Commands/CmdDriveClearAll.h"
+#include "Robot.h"
 
-class OI {
+CmdDriveClearAll::CmdDriveClearAll() {
+  // Use Requires() here to declare subsystem dependencies
+  // eg. Requires(Robot::chassis.get());
+}
 
+// Called once when the command executes
+void CmdDriveClearAll::Initialize() 
+{
+    //Use at the start of Auto to clear/reset all drivetrain parameters
+    Robot::m_drivetrain->ResetEncoders();
+    Robot::m_drivetrain->ZeroGyro();
 
-private:
-  frc::Joystick *driver_gamepad;
-//frc::Joystick *operator_gamepad;
-
-  frc::JoystickButton *m_driver_lbump;
-  frc::JoystickButton *m_driver_rbump;
-
-public:
-  OI();
-
-
-  frc::Joystick *DriverGamepad();
-//frc::Joystick *OperatorGamepad();
-};
+}

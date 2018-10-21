@@ -18,8 +18,8 @@
 //
 #define GAMEPADMAP_AXIS_L_X     0           //Left=0   Right=1
 #define GAMEPADMAP_AXIS_L_Y     1           //Up=0     Down=1
-#define GAMEPADMAP_AXIS_L_TRIG  2           //Off=.5   Pressed=1
-#define GAMEPADMAP_AXIS_R_TRIG  3           //Off=.5   Pressed=1
+#define GAMEPADMAP_AXIS_L_TRIG  2           //Off=0    Pressed=1
+#define GAMEPADMAP_AXIS_R_TRIG  3           //Off=0    Pressed=1
 #define GAMEPADMAP_AXIS_R_X     4           //Left=0   Right=1
 #define GAMEPADMAP_AXIS_R_Y     5           //Up=0     Down=1
 

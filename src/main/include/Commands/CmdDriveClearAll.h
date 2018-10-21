@@ -6,22 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include "WPILib.h"
 
-class OI {
+#include "Commands/InstantCommand.h"
 
-
-private:
-  frc::Joystick *driver_gamepad;
-//frc::Joystick *operator_gamepad;
-
-  frc::JoystickButton *m_driver_lbump;
-  frc::JoystickButton *m_driver_rbump;
-
-public:
-  OI();
-
-
-  frc::Joystick *DriverGamepad();
-//frc::Joystick *OperatorGamepad();
+class CmdDriveClearAll : public frc::InstantCommand {
+ public:
+  CmdDriveClearAll();
+  void Initialize() override;
 };

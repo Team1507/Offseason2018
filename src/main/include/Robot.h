@@ -40,6 +40,9 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
 
+  //Play
+  static frc::Timer *m_timer;
+
  private:
   // Have it null by default so that if testing teleop it
   // doesn't have undefined behavior and potentially crash.
@@ -47,4 +50,7 @@ class Robot : public frc::TimedRobot {
   //ExampleCommand m_defaultAuto;
   //MyAutoCommand m_myAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
+
+
+
 };
