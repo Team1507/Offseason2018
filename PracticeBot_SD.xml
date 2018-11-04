@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Drive Clear All" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="46" y="426"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="309" y="20"/>
 	</static-widget>
