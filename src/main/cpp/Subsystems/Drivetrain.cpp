@@ -37,6 +37,9 @@ Drivetrain::Drivetrain() : Subsystem("Drivetrain")
 	acc_curr_l = 0;
 	acc_curr_r = 0;
 
+	//Tyler Mode
+	tyler_mode_enable = false;
+
 
 	//Disable Motor Saftey
 	//Not a good idea, but required for GrpTest -> WaitCommand() 
@@ -54,35 +57,53 @@ void Drivetrain::InitDefaultCommand() {
 // here. Call these from Commands.
 
 
-#define GP_NULL_ZONE  	0.12
-#define DRIVE_MULT			0.5		//Half power for concrete
+#define GP_NULL_ZONE  	0.08
+//#define DRIVE_MULT			0.5		//Half power for concrete
+#define DRIVE_MULT				0.75	//Max Adult Allowed Drive power on Carpet
 
 //**************************************************************
 void Drivetrain::DriveWithJoystick( void )
 {
-    double right = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_Y);
-    double left  = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_Y);
+    double r_y = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_Y);
+    double r_x = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_X); 
+	double l_y = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_Y);
+    double l_x = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_X);
 
 	double rTrig = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_R_TRIG);
 	double lTrig = Robot::m_oi->DriverGamepad()->GetRawAxis(GAMEPADMAP_AXIS_L_TRIG);
 
 	//Check if readings are in null zone..
-	if( fabs(right)  < GP_NULL_ZONE )	right = 0.0;
-	if( fabs(left )  < GP_NULL_ZONE )	left  = 0.0;
+	if( fabs(r_y)  < GP_NULL_ZONE )	r_y = 0.0;
+	if( fabs(r_x)  < GP_NULL_ZONE )	r_x = 0.0;
+	if( fabs(l_y)  < GP_NULL_ZONE )	l_y = 0.0;
+	if( fabs(l_x)  < GP_NULL_ZONE )	l_x = 0.0;
 
 
-	//Check for Drive Straight
-	if( lTrig > 0.5)
+	if( tyler_mode_enable )
 	{
-		//Drive Straight
-  	    //differentialDrive->TankDrive( left ,  right ,  true);													//True for sraight power
-		differentialDrive->TankDrive( right * DRIVE_MULT,  right * DRIVE_MULT,  false);	//False for reduced power
+		//Arcade Drive
+		l_y *= DRIVE_MULT;	//Reduce drive power
+		r_x *= DRIVE_MULT;
+		//ly=fwd/rev   rx=(inverted)Rotate
+		differentialDrive->ArcadeDrive(l_y,(-1.0)*r_x,true);
 	}
 	else
 	{
-		//Normal Driving
-	    //differentialDrive->TankDrive( left ,  right ,  true);													//True for sraight power
-		differentialDrive->TankDrive( left * DRIVE_MULT,  right * DRIVE_MULT,  false);	//False for reduced power
+		//DEFAULT TANK DRIVE
+	
+		//Check for Drive Straight
+		if( lTrig > 0.5)
+		{
+			//Drive Straight
+			//differentialDrive->TankDrive( l_y ,  r_y ,  true);													//True for sraight power
+			differentialDrive->TankDrive( r_y * DRIVE_MULT,  r_y * DRIVE_MULT,  false);	//False for reduced power
+		}
+		else
+		{
+			//Normal Driving
+			//differentialDrive->TankDrive( l_y ,  r_y ,  true);													//True for sraight power
+			differentialDrive->TankDrive( l_y * DRIVE_MULT,  r_y * DRIVE_MULT,  false);	//False for reduced power
+		}
 	}
 
 
@@ -256,3 +277,12 @@ void Drivetrain::ZeroGyro(void)
 	//ahrs->Reset();//????
 }
 
+//**************** Tyler Drive Mode *********************
+void Drivetrain::SetTylerMode(bool enable)
+{
+	tyler_mode_enable = enable;
+}
+bool Drivetrain::GetTylerMode(void)
+{
+	return tyler_mode_enable;
+}

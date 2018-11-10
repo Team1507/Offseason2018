@@ -1,64 +1,76 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="Drive Clear All" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
-		<location x="46" y="426"/>
+	<widget field="Enable Logger" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="674" y="336"/>
 	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
-		<location x="309" y="20"/>
-	</static-widget>
+	<widget field="Log Enabled" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="690" y="371"/>
+	</widget>
 	<widget field="navx_Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="384" y="213"/>
+		<location x="256" y="37"/>
 	</widget>
-	<widget field="Timer" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="40" y="214"/>
+	<widget field="D_R_Trig" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="639" y="76"/>
 	</widget>
-	<widget field="FPGATime2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="14" y="190"/>
-	</widget>
-	<widget field="navx_Yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="386" y="239"/>
-	</widget>
-	<widget field="R_Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="393" y="144"/>
-	</widget>
-	<widget field="RightEnc" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="548" y="142"/>
-	</widget>
-	<widget field="LeftEnc" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="553" y="120"/>
-	</widget>
-	<widget field="L_Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="395" y="120"/>
+	<widget field="D_L_Trig" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="489" y="78"/>
 	</widget>
 	<widget field="D_R_X_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="560" y="32"/>
-	</widget>
-	<widget field="D_R_Y_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="560" y="9"/>
+		<location x="623" y="35"/>
 	</widget>
 	<widget field="D_L_X_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="377" y="34"/>
+		<location x="475" y="36"/>
+	</widget>
+	<widget field="R_Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="642" y="166"/>
+	</widget>
+	<widget field="L_Motor" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="495" y="166"/>
+	</widget>
+	<widget field="RightEnc" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="640" y="139"/>
+	</widget>
+	<widget field="LeftEnc" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="497" y="139"/>
+	</widget>
+	<widget field="D_R_Y_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="622" y="11"/>
 	</widget>
 	<widget field="D_L_Y_axis" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="377" y="11"/>
+		<location x="474" y="11"/>
+	</widget>
+	<widget field="navx_Yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="259" y="61"/>
+	</widget>
+	<widget field="Timer" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="71" y="222"/>
+	</widget>
+	<widget field="FPGATime2" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="43" y="247"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="321" y="97"/>
+	</static-widget>
+	<widget field="Drive Clear All" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="472"/>
 	</widget>
 	<widget field="GrpTest Command" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
-		<location x="25" y="377"/>
+		<location x="0" y="438"/>
 	</widget>
 	<widget field="CmdGearControl: LO_GEAR" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
-		<location x="0" y="317"/>
+		<location x="0" y="404"/>
 	</widget>
 	<widget field="CmdGearControl: HI_GEAR" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
-		<location x="2" y="288"/>
+		<location x="0" y="370"/>
+	</widget>
+	<widget field="TylerModeEnable" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="664" y="431"/>
 	</widget>
 	<widget field="navx_IsConn" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="373" y="190"/>
+		<location x="246" y="14"/>
 	</widget>
-	<widget field="D_L_Trig" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="390" y="61"/>
-	</widget>
-	<widget field="D_R_Trig" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="572" y="57"/>
+	<widget field="TylerModeFlag" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="683" y="466"/>
 	</widget>
 </dashboard>
 <live-window>
@@ -66,29 +78,29 @@
 		<location x="0" y="24"/>
 	</widget>
 	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
-		<widget field="Encoder[2]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
-			<location x="6" y="16"/>
-			<height>98</height>
-			<width>293</width>
-		</widget>
-		<widget field="DoubleSolenoid[1,0]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
-			<location x="6" y="114"/>
-			<height>20</height>
-			<width>293</width>
-		</widget>
 		<widget field="Spark[1]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-			<location x="6" y="134"/>
+			<location x="6" y="16"/>
 			<height>46</height>
 			<width>293</width>
 		</widget>
+		<widget field="Encoder[2]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
+			<location x="6" y="62"/>
+			<height>98</height>
+			<width>293</width>
+		</widget>
 		<widget field="Encoder[0]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
-			<location x="6" y="180"/>
+			<location x="6" y="160"/>
 			<height>98</height>
 			<width>293</width>
 		</widget>
 		<widget field="Spark[0]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-			<location x="6" y="278"/>
+			<location x="6" y="258"/>
 			<height>46</height>
+			<width>293</width>
+		</widget>
+		<widget field="DoubleSolenoid[1,0]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
+			<location x="6" y="304"/>
+			<height>20</height>
 			<width>293</width>
 		</widget>
 		<location x="0" y="0"/>
@@ -96,5 +108,4 @@
 		<height>331</height>
 	</widget>
 </live-window>
-	<hidden field="Auto Selector"/>
 </xml>

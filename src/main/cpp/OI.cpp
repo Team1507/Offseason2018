@@ -12,6 +12,8 @@
 #include "GamepadMap.h"
 #include "Commands/CmdTrannyGearCtrl.h"
 #include "Commands/CmdDriveClearAll.h"
+#include "Commands/CmdTylerModeEnable.h"
+#include "Commands/CmdLogEnable.h"
 
 #include "Commands/GrpTest.h"
 
@@ -45,6 +47,9 @@ OI::OI() {
   
   frc::SmartDashboard::PutData("Drive Clear All", new CmdDriveClearAll() );
 
+  frc::SmartDashboard::PutData("TylerModeEnable", new CmdTylerModeEnable() );
+
+  frc::SmartDashboard::PutData("Enable Logger", new CmdLogEnable() );
 }
 
 

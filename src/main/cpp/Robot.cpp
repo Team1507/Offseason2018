@@ -11,6 +11,11 @@
 #include <Commands/Scheduler.h>
 #include <SmartDashboard/SmartDashboard.h>
 
+#include <fstream>
+#include <string>
+#include <ctime>
+#include <iomanip>      // std::setprecision
+
 //ExampleSubsystem Robot::m_subsystem;
 OI *Robot::m_oi;
 Drivetrain *Robot::m_drivetrain;
@@ -20,6 +25,14 @@ frc::Timer *Robot::m_timer;
 
 //local function prototypes
 void Write2Dashboard(void);
+void LogFileOpen(void);
+void LogFileClose(void);
+void LogFileWrite(void);
+
+//LogFiles
+static std::ofstream logfile;		//Defined here - not a member of Robot::
+
+bool Robot::log_enable;
 
 
 void Robot::RobotInit()
@@ -37,7 +50,7 @@ void Robot::RobotInit()
   m_timer = new frc::Timer();
 
 	//******** INIT *************************************
-  std::cout<<"RobotInit"<<std::endl;
+    std::cout<<"RobotInit"<<std::endl;
 	std::cout<<"PracticeBot2018"<<std::endl;
 
 	//Display Version info to Log file, for posterity
@@ -49,8 +62,9 @@ void Robot::RobotInit()
 
   //Init Subsystems
   m_drivetrain->ResetEncoders();
-  m_drivetrain->SetGear( Drivetrain::LO_GEAR );
+  m_drivetrain->SetGear( Drivetrain::HI_GEAR );
 
+  log_enable = false;
 
   //I don't think this works.  It may be too early and not talking to NavX yet
   //m_drivetrain->ZeroGyro();   
@@ -68,6 +82,7 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic() 
 {
   Write2Dashboard();
+  LogFileWrite();
 }
 
 /**
@@ -77,10 +92,13 @@ void Robot::RobotPeriodic()
  */
 void Robot::DisabledInit() 
 {
-  std::cout<<"DisabledInit"<<std::endl;
+	std::cout<<"DisabledInit"<<std::endl;
 
-  m_drivetrain->Stop();
-  m_timer->Stop();
+  	LogFileClose();
+    log_enable = false;
+
+  	m_drivetrain->Stop();
+  	m_timer->Stop();
 
 }
 
@@ -122,21 +140,25 @@ void Robot::TeleopInit() {
   // continue until interrupted by another command, remove
   // this line or comment it out.
 
+    std::cout<<"TeleopInit"<<std::endl;
 
-  std::cout<<"TeleopInit"<<std::endl;
+    m_timer->Reset();
+    m_timer->Start();
 
-  m_timer->Reset();
-  m_timer->Start();
-
-  if (m_autonomousCommand != nullptr) {
-    m_autonomousCommand->Cancel();
-    m_autonomousCommand = nullptr;
-  }
+    if (m_autonomousCommand != nullptr) {
+        m_autonomousCommand->Cancel();
+        m_autonomousCommand = nullptr;
+    }
 }
 
 void Robot::TeleopPeriodic() 
 { 
-  frc::Scheduler::GetInstance()->Run();
+
+    //I don't like this here.  There has to be a better way!
+    if( log_enable && !logfile.is_open() )
+        LogFileOpen();
+
+    frc::Scheduler::GetInstance()->Run();
 }
 
 void Robot::TestPeriodic() 
@@ -171,10 +193,65 @@ void Write2Dashboard(void)
 	SmartDashboard::PutNumber("navx_Yaw",     Robot::m_drivetrain->GetGyroYaw() );
   SmartDashboard::PutNumber("navx_Rate",    Robot::m_drivetrain->GetGyroRate() );
 
+	SmartDashboard::PutBoolean("TylerModeFlag", Robot::m_drivetrain->GetTylerMode() );
+    SmartDashboard::PutBoolean("Log Enabled", Robot::log_enable );
 
   //Time
   //SmartDashboard::PutNumber("FPGATime1",  GetFPGATime() );                      //us
   SmartDashboard::PutNumber("FPGATime2",  Robot::m_timer->GetFPGATimestamp() );   //sec
   SmartDashboard::PutNumber("Timer",      Robot::m_timer->Get() );                //sec
 
+}
+
+//*********** LOG File Handlers **************************
+#define LOGFILEDIRNAME "/media/sda1/"
+void LogFileOpen(void)
+{
+    std::string filename;
+    char tbuf[100];
+
+    //Get current time and format into a filename -> mmdd_HHMMSS
+    std::time_t time = std::time(0); 
+    std::tm*    ts   = std::localtime(&time);
+    strftime(tbuf, sizeof(tbuf), "%m%d_%H%M%S", ts);
+
+    //Generate path and filename into a string
+    filename  = LOGFILEDIRNAME;     //Start with directory
+    filename += tbuf;               //Add time file name
+    filename += ".csv";             //Add CSV as the extention
+
+    //Finally, open the file
+	logfile.open(filename, std::ios::out | std::ios::trunc );
+
+	if( logfile.is_open() )     std::cout<<"LogFile Opened: " << tbuf <<std::endl;
+	else                        std::cout<<"*** Could NOT Open Logfile!!!!"<<std::endl;
+		
+}
+void LogFileClose(void)
+{
+    if( logfile.is_open() )
+    {
+		logfile.close();
+        std::cout<<"LogFile Closed"<<std::endl;
+    }
+}
+void LogFileWrite(void)
+{
+    if( !logfile.is_open() ) return;
+
+
+    logfile << std::fixed << std::setprecision(3);
+
+    logfile << Robot::m_timer->Get()  << ",";      //ms since start
+
+    logfile << 0 << ",";                                        //mode
+
+
+    logfile << Robot::m_drivetrain->GetGyroYaw()        << ",";
+    logfile << Robot::m_drivetrain->GetLeftMotor()      << ",";
+    logfile << Robot::m_drivetrain->GetRightMotor()     << ",";
+
+
+    //Finally,New Line
+    logfile << "\n";
 }

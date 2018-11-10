@@ -29,6 +29,7 @@ class Drivetrain : public frc::Subsystem {
 
   double acc_curr_l;
   double acc_curr_r;
+  bool   tyler_mode_enable;
 
  public:
   Drivetrain();
@@ -67,6 +68,9 @@ class Drivetrain : public frc::Subsystem {
 	double GetGyroRate(void);
 	void   ZeroGyro(void);
 
+  //Tyler Drive Mode
+  void SetTylerMode(bool);
+  bool GetTylerMode(void);
 
 
 };

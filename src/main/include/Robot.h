@@ -11,6 +11,7 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <TimedRobot.h>
 
+
 //#include "Commands/ExampleCommand.h"
 //#include "Commands/MyAutoCommand.h"
 #include "OI.h"
@@ -20,6 +21,7 @@
 #include "Subsystems\Drivetrain.h"
 
 #include <iostream>	
+
 
 class Robot : public frc::TimedRobot {
  public:
@@ -42,6 +44,8 @@ class Robot : public frc::TimedRobot {
 
   //Play
   static frc::Timer *m_timer;
+
+ static bool log_enable;
 
  private:
   // Have it null by default so that if testing teleop it
