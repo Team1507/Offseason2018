@@ -9,14 +9,17 @@
 
 #include <Commands/Command.h>
 
-class CmdLogEnable : public frc::Command {
+class CmdDriveTurn2Angle : public frc::Command {
  public:
-  CmdLogEnable(bool enable);
+  CmdDriveTurn2Angle(double power, double angle);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 private:
-  bool m_enable;
+    double m_power;
+    double m_angle;
+    double m_calcAngle;
+    bool   m_isRightTurn;
 };

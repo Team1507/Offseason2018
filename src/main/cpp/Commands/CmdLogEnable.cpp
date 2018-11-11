@@ -8,15 +8,16 @@
 #include "Commands/CmdLogEnable.h"
 #include "Robot.h"
 
-CmdLogEnable::CmdLogEnable() {
+CmdLogEnable::CmdLogEnable(bool enable) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
+  m_enable = enable;
 }
 
 // Called just before this Command runs the first time
 void CmdLogEnable::Initialize() 
 {
-  Robot::log_enable = true;
+  Robot::log_enable = m_enable;
 }
 
 // Called repeatedly when this Command is scheduled to run

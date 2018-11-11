@@ -46,6 +46,7 @@ class Robot : public frc::TimedRobot {
   static frc::Timer *m_timer;
 
  static bool log_enable;
+ static int  log_marker;
 
  private:
   // Have it null by default so that if testing teleop it

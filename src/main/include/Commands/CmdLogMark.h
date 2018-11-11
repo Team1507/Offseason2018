@@ -7,16 +7,12 @@
 
 #pragma once
 
-#include <Commands/Command.h>
+#include "Commands/InstantCommand.h"
 
-class CmdLogEnable : public frc::Command {
+class CmdLogMark : public frc::InstantCommand {
  public:
-  CmdLogEnable(bool enable);
+  CmdLogMark(int mark);
   void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
 private:
-  bool m_enable;
+  int m_mark;
 };

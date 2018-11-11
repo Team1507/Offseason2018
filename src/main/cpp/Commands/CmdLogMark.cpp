@@ -5,18 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "Commands/CmdLogMark.h"
+#include "Robot.h"
 
-#include <Commands/Command.h>
+CmdLogMark::CmdLogMark(int mark) {
 
-class CmdLogEnable : public frc::Command {
- public:
-  CmdLogEnable(bool enable);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-private:
-  bool m_enable;
-};
+    m_mark = mark;
+  // Use Requires() here to declare subsystem dependencies
+  // eg. Requires(Robot::chassis.get());
+}
+
+// Called once when the command executes
+void CmdLogMark::Initialize() 
+{
+    Robot::log_marker = m_mark;
+}

@@ -40,6 +40,11 @@ Drivetrain::Drivetrain() : Subsystem("Drivetrain")
 	//Tyler Mode
 	tyler_mode_enable = false;
 
+    //Encoder Velocity
+    int    prev_l_enc;
+    int    prev_r_enc;
+    int    delta_l_enc;
+    int    delta_r_enc;
 
 	//Disable Motor Saftey
 	//Not a good idea, but required for GrpTest -> WaitCommand() 
@@ -55,6 +60,23 @@ void Drivetrain::InitDefaultCommand() {
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+
+
+//**************************************************************
+void Drivetrain::DrivePeriodic(void)
+{
+    int curr_l_enc = GetLeftEncoder();
+    int curr_r_enc = GetRightEncoder();
+
+    delta_l_enc = curr_l_enc - prev_l_enc;
+    delta_r_enc = curr_r_enc - prev_r_enc;
+
+    prev_l_enc = curr_l_enc;
+    prev_r_enc = curr_r_enc;
+
+
+}
+
 
 
 #define GP_NULL_ZONE  	0.08
@@ -251,8 +273,23 @@ void Drivetrain::ResetEncoders(void)
 {
 	leftEncoder->Reset();
 	rightEncoder->Reset();
+
+    delta_l_enc = 0;
+    delta_r_enc = 0;
+    prev_l_enc  = 0;
+    prev_r_enc  = 0;
+
 }
 
+//20ms = 50Hz
+int  Drivetrain::GetLeftEncVel(void)
+{
+    return (int)( (delta_l_enc * 50 )/ENC_TICKS_PER_INCH  );
+}
+int  Drivetrain::GetRightEncVel(void)
+{
+    return (int)( (delta_r_enc * 50 )/ENC_TICKS_PER_INCH  );
+}
 
 
 //**************** AHRS (NavX) *********************

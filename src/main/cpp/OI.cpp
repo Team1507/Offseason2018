@@ -49,7 +49,7 @@ OI::OI() {
 
   frc::SmartDashboard::PutData("TylerModeEnable", new CmdTylerModeEnable() );
 
-  frc::SmartDashboard::PutData("Enable Logger", new CmdLogEnable() );
+  frc::SmartDashboard::PutData("Enable Logger", new CmdLogEnable(true) );
 }
 
 

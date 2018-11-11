@@ -31,6 +31,13 @@ class Drivetrain : public frc::Subsystem {
   double acc_curr_r;
   bool   tyler_mode_enable;
 
+  //Encoder Velocity
+  int    prev_l_enc;
+  int    prev_r_enc;
+  int    delta_l_enc;
+  int    delta_r_enc;
+
+
  public:
   Drivetrain();
   void InitDefaultCommand() override;
@@ -42,6 +49,9 @@ class Drivetrain : public frc::Subsystem {
   const static int ENC_TICKS_PER_INCH;
 
   //*****Our Functions******
+
+  //Periodic
+  void   DrivePeriodic(void);
 
   //Drive
   void   DriveWithJoystick( void );
@@ -61,6 +71,10 @@ class Drivetrain : public frc::Subsystem {
 	int  GetLeftEncoder(void);
 	int  GetRightEncoder(void);
 	void ResetEncoders(void);
+    int  GetLeftEncVel(void);
+    int  GetRightEncVel(void);
+    
+
 
   //NavX
 	bool   IsGyroConnected(void);

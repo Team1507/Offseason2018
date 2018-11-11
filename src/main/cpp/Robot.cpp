@@ -33,7 +33,7 @@ void LogFileWrite(void);
 static std::ofstream logfile;		//Defined here - not a member of Robot::
 
 bool Robot::log_enable;
-
+int  Robot::log_marker;
 
 void Robot::RobotInit()
 {
@@ -65,6 +65,7 @@ void Robot::RobotInit()
   m_drivetrain->SetGear( Drivetrain::HI_GEAR );
 
   log_enable = false;
+  log_marker = 0;
 
   //I don't think this works.  It may be too early and not talking to NavX yet
   //m_drivetrain->ZeroGyro();   
@@ -83,6 +84,8 @@ void Robot::RobotPeriodic()
 {
   Write2Dashboard();
   LogFileWrite();
+
+  m_drivetrain->DrivePeriodic();
 }
 
 /**
@@ -157,6 +160,9 @@ void Robot::TeleopPeriodic()
     //I don't like this here.  There has to be a better way!
     if( log_enable && !logfile.is_open() )
         LogFileOpen();
+    if( !log_enable && logfile.is_open() )
+        LogFileClose();        
+
 
     frc::Scheduler::GetInstance()->Run();
 }
@@ -188,6 +194,8 @@ void Write2Dashboard(void)
 
 	SmartDashboard::PutNumber("LeftEnc",    Robot::m_drivetrain->GetLeftEncoder());
 	SmartDashboard::PutNumber("RightEnc",   Robot::m_drivetrain->GetRightEncoder());  
+	SmartDashboard::PutNumber("LeftEncVel", Robot::m_drivetrain->GetLeftEncVel());
+	SmartDashboard::PutNumber("RightEncVel",Robot::m_drivetrain->GetRightEncVel());  
 
 	SmartDashboard::PutBoolean("navx_IsConn", Robot::m_drivetrain->IsGyroConnected() );
 	SmartDashboard::PutNumber("navx_Yaw",     Robot::m_drivetrain->GetGyroYaw() );
@@ -223,8 +231,27 @@ void LogFileOpen(void)
     //Finally, open the file
 	logfile.open(filename, std::ios::out | std::ios::trunc );
 
-	if( logfile.is_open() )     std::cout<<"LogFile Opened: " << tbuf <<std::endl;
-	else                        std::cout<<"*** Could NOT Open Logfile!!!!"<<std::endl;
+	if( logfile.is_open() )
+    {
+        std::cout<<"LogFile Opened: " << tbuf <<std::endl;
+        //Write header
+        logfile << "Time "      << ","; // 1:  ms since start
+        logfile << "Mode"       << ","; // 2:  mode
+        logfile << "Marker"     << ","; // 3:  log marker
+        logfile << "Yaw"        << ","; // 4:  Yaw
+        logfile << "LMotor"     << ","; // 5:  LeftMotor
+        logfile << "RMotor"     << ","; // 6:  RightMotor
+        logfile << "LEnc"       << ","; // 7:  Left Encoder
+        logfile << "REnc"       << ","; // 8:  Right Encoder
+        logfile << "LEncV"      << ","; // 9:  Left Encoder Velocity
+        logfile << "REncV"      << ","; // 10: Right Encoder Velocity
+
+
+        //Must be last
+        logfile << "\n";
+    }     
+	else
+        std::cout<<"*** Could NOT Open Logfile!!!!"<<std::endl;
 		
 }
 void LogFileClose(void)
@@ -242,16 +269,23 @@ void LogFileWrite(void)
 
     logfile << std::fixed << std::setprecision(3);
 
-    logfile << Robot::m_timer->Get()  << ",";      //ms since start
+    logfile << Robot::m_timer->Get()                    << ","; // 1:  ms since start
+    logfile << 0                                        << ","; // 2:  mode
+    if(Robot::log_marker>0)logfile << Robot::log_marker << ","; // 3:  With debug marker
+    else                   logfile                      << ","; // 3:  No debug marker (blank)
+    logfile << Robot::m_drivetrain->GetGyroYaw()        << ","; // 4:  Yaw
+    logfile << Robot::m_drivetrain->GetLeftMotor()      << ","; // 5:  LeftMotor
+    logfile << Robot::m_drivetrain->GetRightMotor()     << ","; // 6:  RightMotor
+    logfile << Robot::m_drivetrain->GetLeftEncoder()    << ","; // 7:  Left Encoder
+    logfile << Robot::m_drivetrain->GetRightEncoder()   << ","; // 8:  Right Encoder
+    logfile << Robot::m_drivetrain->GetLeftEncVel()     << ","; // 9:  Left Encoder Velocity
+    logfile << Robot::m_drivetrain->GetRightEncVel()    << ","; // 10: Right Encoder Velocity
 
-    logfile << 0 << ",";                                        //mode
+    //Write Debug Log Markers to screen
+    if( Robot::log_marker>0 )
+        std::cout<<"LogMarker: "<< Robot::log_marker <<std::endl;
 
-
-    logfile << Robot::m_drivetrain->GetGyroYaw()        << ",";
-    logfile << Robot::m_drivetrain->GetLeftMotor()      << ",";
-    logfile << Robot::m_drivetrain->GetRightMotor()     << ",";
-
-
-    //Finally,New Line
+    //Must be last
+    Robot::log_marker = 0;
     logfile << "\n";
 }
