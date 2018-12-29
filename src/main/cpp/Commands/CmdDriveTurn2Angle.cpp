@@ -22,7 +22,7 @@ CmdDriveTurn2Angle::CmdDriveTurn2Angle(double power, double angle)
 // Called just before this Command runs the first time
 void CmdDriveTurn2Angle::Initialize() 
 {
-	m_calcAngle   = Robot::m_drivetrain->GetGyroYaw() + m_angle;	//Calculate degrees to turn
+	m_calcAngle   = Robot::m_drivetrain->GetGyroAngle() + m_angle;	//Calculate degrees to turn
 	m_isRightTurn = m_angle > 0;								    //Right turn if angle positive    
 }
 
@@ -32,12 +32,12 @@ void CmdDriveTurn2Angle::Execute()
 	if( m_isRightTurn )
 	{
 		//Right turn.  Drive LEFT motor hard
-		Robot::m_drivetrain->Drive(m_power, 0.1);
+		Robot::m_drivetrain->Drive(m_power, -0.1);
 	}
 	else
 	{
 		//Left turn.  Drive RIGHT motor hard
-		Robot::m_drivetrain->Drive(0.1, m_power);
+		Robot::m_drivetrain->Drive(-0.1, m_power);
 	}
 }
 
@@ -47,7 +47,7 @@ bool CmdDriveTurn2Angle::IsFinished()
 	if( m_isRightTurn )
 	{
 		//Right turn: Done when Yaw becomes greater than calc angle
-		if(Robot::m_drivetrain->GetGyroYaw() >= m_calcAngle)
+		if(Robot::m_drivetrain->GetGyroAngle() >= m_calcAngle)
 		{
 			return true;
 		}
@@ -55,7 +55,7 @@ bool CmdDriveTurn2Angle::IsFinished()
 	else
 	{
 		//Left Turn:  Done when Yaw becomes less than calc angle
-		if(Robot::m_drivetrain->GetGyroYaw() <= m_calcAngle)
+		if(Robot::m_drivetrain->GetGyroAngle() <= m_calcAngle)
 		{
 			return true;
 		}

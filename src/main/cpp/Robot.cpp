@@ -199,6 +199,8 @@ void Write2Dashboard(void)
 
 	SmartDashboard::PutBoolean("navx_IsConn", Robot::m_drivetrain->IsGyroConnected() );
 	SmartDashboard::PutNumber("navx_Yaw",     Robot::m_drivetrain->GetGyroYaw() );
+   	SmartDashboard::PutNumber("navx_Angle",   Robot::m_drivetrain->GetGyroAngle() );
+ 
   SmartDashboard::PutNumber("navx_Rate",    Robot::m_drivetrain->GetGyroRate() );
 
 	SmartDashboard::PutBoolean("TylerModeFlag", Robot::m_drivetrain->GetTylerMode() );
@@ -273,7 +275,7 @@ void LogFileWrite(void)
     logfile << 0                                        << ","; // 2:  mode
     if(Robot::log_marker>0)logfile << Robot::log_marker << ","; // 3:  With debug marker
     else                   logfile                      << ","; // 3:  No debug marker (blank)
-    logfile << Robot::m_drivetrain->GetGyroYaw()        << ","; // 4:  Yaw
+    logfile << Robot::m_drivetrain->GetGyroAngle()      << ","; // 4:  Yaw
     logfile << Robot::m_drivetrain->GetLeftMotor()      << ","; // 5:  LeftMotor
     logfile << Robot::m_drivetrain->GetRightMotor()     << ","; // 6:  RightMotor
     logfile << Robot::m_drivetrain->GetLeftEncoder()    << ","; // 7:  Left Encoder

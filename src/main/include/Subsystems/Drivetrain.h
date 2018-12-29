@@ -78,7 +78,8 @@ class Drivetrain : public frc::Subsystem {
 
   //NavX
 	bool   IsGyroConnected(void);
-	double GetGyroYaw(void);
+	double GetGyroYaw(void);            //yaw: Relative -180 to +180
+	double GetGyroAngle(void);          //angle: absolute -inf to +inf
 	double GetGyroRate(void);
 	void   ZeroGyro(void);
 

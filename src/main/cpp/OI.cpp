@@ -16,6 +16,8 @@
 #include "Commands/CmdLogEnable.h"
 
 #include "Commands/GrpTest.h"
+#include "Commands/GrpTest2.h"
+#include "Commands/CmdTurnPIDTest.h"
 
 OI::OI() {
   // Process operator interface input here.
@@ -44,7 +46,10 @@ OI::OI() {
   frc::SmartDashboard::PutData("CmdGearControl: HI_GEAR", new CmdTrannyGearCtrl(Drivetrain::HI_GEAR));
 
   frc::SmartDashboard::PutData("GrpTest Command", new GrpTest() );
+  frc::SmartDashboard::PutData("GrpTest2 Command", new GrpTest2() );
   
+  frc::SmartDashboard::PutData("CmdTurnPIDTest Command", new CmdTurnPIDTest() );
+ 
   frc::SmartDashboard::PutData("Drive Clear All", new CmdDriveClearAll() );
 
   frc::SmartDashboard::PutData("TylerModeEnable", new CmdTylerModeEnable() );

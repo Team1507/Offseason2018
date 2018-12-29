@@ -35,7 +35,8 @@ void CmdDriveFwdGyro::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void CmdDriveFwdGyro::Execute() 
 {
-	double errorAngle = Robot::m_drivetrain->GetGyroYaw() - m_heading;
+	//double errorAngle = Robot::m_drivetrain->GetGyroYaw() - m_heading;
+	double errorAngle = Robot::m_drivetrain->GetGyroAngle() - m_heading;
 	double kp = 0.075;
 
 

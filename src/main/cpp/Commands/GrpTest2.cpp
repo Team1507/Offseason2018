@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "Commands/GrpTest.h"
+#include "Commands/GrpTest2.h"
 #include "Commands/CmdPrintAutoText.h"
 #include "Commands/CmdDriveFwdEncoder.h"
 #include "Commands/CmdDriveRevEncoder.h"
@@ -22,9 +22,9 @@
 #define FWD_PWR 0.6
 #define TRN_PWR 0.5
 
-GrpTest::GrpTest() 
+GrpTest2::GrpTest2() 
 {
-    AddSequential(new CmdPrintAutoText("GrpTest Begin"));
+    AddSequential(new CmdPrintAutoText("GrpTest2 Begin"));
     AddSequential(new CmdDriveClearAll());
     AddSequential(new WaitCommand(0.25));
     //***************************************************
@@ -34,40 +34,30 @@ GrpTest::GrpTest()
     AddSequential(new CmdDriveFwdGyro(FWD_PWR, 0.0,  40, true, 0) );
         AddSequential(new CmdLogMark(1));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, -90.0 ) );
+    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
         AddSequential(new CmdLogMark(2));
 
-    AddSequential(new CmdDriveFwdGyro(FWD_PWR, -90,  40, true, 0) );
+    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 90,  40, true, 0) );
         AddSequential(new CmdLogMark(3));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, -90.0 ) );
+    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
         AddSequential(new CmdLogMark(4));
 
-    AddSequential(new CmdDriveFwdGyro(FWD_PWR, -180,  40, true, 0) );
+    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 180,  40, true, 0) );
         AddSequential(new CmdLogMark(5));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, -90.0 ) );
+    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
         AddSequential(new CmdLogMark(6));
 
-    AddSequential(new CmdDriveFwdGyro(FWD_PWR, -270,  40, true, 0) );
+    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 270,  40, true, 0) );
         AddSequential(new CmdLogMark(7));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, -90.0 ) ); 
- 
-    // //FWD/BKWD Test ***********************************************
-    // AddSequential(new CmdDriveFwdGyro(FWD_PWR, 0.0,  40, true, 0) );
-    // AddSequential(new WaitCommand(2.0));
-    // AddSequential(new CmdDriveRevGyro(FWD_PWR, 0.0,  40, true, 0) );  
-    // AddSequential(new WaitCommand(2.0));  
-    // AddSequential(new CmdDriveFwdGyro(FWD_PWR, 0.0,  40, true, 0) );
-    // AddSequential(new WaitCommand(2.0));
-    // AddSequential(new CmdDriveRevGyro(FWD_PWR, 0.0,  40, true, 0) );  
-    // AddSequential(new WaitCommand(2.0)); 
-    // //**************************************************************
+    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) ); 
+
 
 
     //***************************************************
     AddSequential(new WaitCommand(2.0));        //Let it finish whatever it's doing
     AddSequential(new CmdLogEnable(false));
-    AddSequential(new CmdPrintAutoText("GrpTest Done!"));
+    AddSequential(new CmdPrintAutoText("GrpTest2 Done!"));
 }

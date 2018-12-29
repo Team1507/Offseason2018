@@ -300,8 +300,16 @@ bool Drivetrain::IsGyroConnected(void)
 }
 double Drivetrain::GetGyroYaw(void)
 {
+    //Returns Relative Yaw:  -180 to +180
 	return (double) ahrs->GetYaw();
 }
+double Drivetrain::GetGyroAngle(void)
+{
+    //returns total accumulated angle -inf to +inf  (continuous through 360deg)
+	return (double) ahrs->GetAngle();
+}
+
+
 double Drivetrain::GetGyroRate(void)
 {
 	return ahrs->GetRate();
