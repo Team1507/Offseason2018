@@ -48,7 +48,7 @@ OI::OI() {
   frc::SmartDashboard::PutData("GrpTest Command", new GrpTest() );
   frc::SmartDashboard::PutData("GrpTest2 Command", new GrpTest2() );
   
-  frc::SmartDashboard::PutData("CmdTurnPIDTest Command", new CmdTurnPIDTest() );
+  frc::SmartDashboard::PutData("CmdTurnPIDTest Command", new CmdTurnPIDTest( 45.0 ) );
  
   frc::SmartDashboard::PutData("Drive Clear All", new CmdDriveClearAll() );
 

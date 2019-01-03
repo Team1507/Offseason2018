@@ -18,6 +18,7 @@
 #include "Commands/CmdLogMark.h"
 
 #include "Commands/CmdDriveClearAll.h"
+#include "Commands/CmdTurnPIDTest.h"
 
 #define FWD_PWR 0.6
 #define TRN_PWR 0.5
@@ -32,27 +33,44 @@ GrpTest2::GrpTest2()
     //***************************************************
 
     AddSequential(new CmdDriveFwdGyro(FWD_PWR, 0.0,  40, true, 0) );
+    AddSequential(new CmdTurnPIDTest(90) );  
         AddSequential(new CmdLogMark(1));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
+    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 90.0,  40, true, 0) );
+    AddSequential(new CmdTurnPIDTest(180) );  
         AddSequential(new CmdLogMark(2));
 
-    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 90,  40, true, 0) );
+    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 180.0,  40, true, 0) );
+    AddSequential(new CmdTurnPIDTest(270) );  
         AddSequential(new CmdLogMark(3));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
+    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 270.0,  40, true, 0) );
+    AddSequential(new CmdTurnPIDTest(360) );  
         AddSequential(new CmdLogMark(4));
 
-    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 180,  40, true, 0) );
-        AddSequential(new CmdLogMark(5));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
-        AddSequential(new CmdLogMark(6));
+    // AddSequential(new CmdDriveFwdGyro(FWD_PWR, 0.0,  40, true, 0) );
+    //     AddSequential(new CmdLogMark(1));
 
-    AddSequential(new CmdDriveFwdGyro(FWD_PWR, 270,  40, true, 0) );
-        AddSequential(new CmdLogMark(7));
+    // AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
+    //     AddSequential(new CmdLogMark(2));
 
-    AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) ); 
+    // AddSequential(new CmdDriveFwdGyro(FWD_PWR, 90,  40, true, 0) );
+    //     AddSequential(new CmdLogMark(3));
+
+    // AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
+    //     AddSequential(new CmdLogMark(4));
+
+    // AddSequential(new CmdDriveFwdGyro(FWD_PWR, 180,  40, true, 0) );
+    //     AddSequential(new CmdLogMark(5));
+
+    // AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) );
+    //     AddSequential(new CmdLogMark(6));
+
+    // AddSequential(new CmdDriveFwdGyro(FWD_PWR, 270,  40, true, 0) );
+    //     AddSequential(new CmdLogMark(7));
+
+    // AddSequential(new CmdDriveTurn2Angle(TRN_PWR, 90.0 ) ); 
 
 
 

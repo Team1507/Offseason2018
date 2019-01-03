@@ -135,7 +135,7 @@ void Drivetrain::DriveWithJoystick( void )
 void Drivetrain::Drive( double left, double right )
 {
 	//Neg=Fwd.   Pos=Rev
-	differentialDrive->TankDrive( (-1.0)*DRIVE_MULT*left,  (-1.0)*DRIVE_MULT*right,  false);
+	differentialDrive->TankDrive( (-1.0)*left,  (-1.0)*right,  false);
 
 }
 

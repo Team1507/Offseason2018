@@ -12,7 +12,7 @@ class CmdTurnPIDTest: public PIDCommand
 {
 
     public:
-        CmdTurnPIDTest( );
+        CmdTurnPIDTest(  int turn_angle );
 
         virtual void Initialize();
         virtual void Execute();

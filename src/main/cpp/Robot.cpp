@@ -67,6 +67,13 @@ void Robot::RobotInit()
   log_enable = false;
   log_marker = 0;
 
+    //Init PID controller
+    //This seems to work well!
+    //p=0.06, k=0.0,  d=0.08
+    SmartDashboard::PutNumber("Turn_kP", 0.06 );    
+    SmartDashboard::PutNumber("Turn_kI", 0.0);    
+    SmartDashboard::PutNumber("Turn_kD", 0.08);   
+
   //I don't think this works.  It may be too early and not talking to NavX yet
   //m_drivetrain->ZeroGyro();   
 

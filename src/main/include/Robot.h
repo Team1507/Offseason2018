@@ -21,6 +21,7 @@
 #include "Subsystems\Drivetrain.h"
 
 #include <iostream>	
+#include <iomanip>      // std::setprecision
 
 
 class Robot : public frc::TimedRobot {
